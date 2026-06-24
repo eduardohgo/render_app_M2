@@ -1,0 +1,43 @@
+{
+  "dataset_name": "Bias correction of numerical prediction model temperature forecast",
+  "kaggle_page_url": "https://www.kaggle.com/datasets/viktorpopov/bias-correction-ucl",
+  "data_url": "https://www.kaggle.com/api/v1/datasets/download/viktorpopov/bias-correction-ucl",
+  "target": "Next_Tmax",
+  "target_description": "Temperatura máxima del día siguiente en Seúl, Corea del Sur, medida en grados Celsius.",
+  "sample_size": null,
+  "random_state": 42,
+  "features": [
+    "LDAPS_Tmax_lapse",
+    "Present_Tmax",
+    "LDAPS_CC3",
+    "LDAPS_Tmin_lapse",
+    "LDAPS_CC2",
+    "LDAPS_CC1"
+  ],
+  "selected_features": [
+    "LDAPS_Tmax_lapse",
+    "Present_Tmax",
+    "LDAPS_CC3",
+    "LDAPS_Tmin_lapse",
+    "LDAPS_CC2",
+    "LDAPS_CC1"
+  ],
+  "field_descriptions": {
+    "LDAPS_Tmax_lapse": "Pronóstico LDAPS de temperatura máxima para el día siguiente (grados Celsius).",
+    "Present_Tmax": "Temperatura máxima observada en el día actual (grados Celsius).",
+    "LDAPS_CC3": "Cobertura de nubes estimada por LDAPS en el tercer periodo del pronóstico (0 a 1).",
+    "LDAPS_Tmin_lapse": "Pronóstico LDAPS de temperatura mínima para el día siguiente (grados Celsius).",
+    "LDAPS_CC2": "Cobertura de nubes estimada por LDAPS en el segundo periodo del pronóstico (0 a 1).",
+    "LDAPS_CC1": "Cobertura de nubes estimada por LDAPS en el primer periodo del pronóstico (0 a 1)."
+  },
+  "best_scenario": "Características seleccionadas",
+  "best_model": "KNeighborsRegressor",
+  "metrics": {
+    "scenario": "Caracteristicas seleccionadas",
+    "model_name": "KNeighborsRegressor",
+    "r2_test": 0.8861197230957923,
+    "mae_test": 0.7354990991027254,
+    "test_size": 1545,
+    "train_size": 6180
+  }
+}

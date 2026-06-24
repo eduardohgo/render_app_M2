@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Predicción de temperatura máxima</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  </head>
+  <body>
+    <main class="page">
+      <header class="header">
+        <p class="subject">Proyecto final de regresión con CRISP-DM</p>
+        <h1>Predicción de temperatura máxima del día siguiente</h1>
+        <p class="student">
+          Alumno: <strong>{{ student.name }}</strong> ·
+          Matrícula: <strong>{{ student.matricula }}</strong> ·
+          Grupo: <strong>{{ student.group }}</strong> ·
+          Profesor: <strong>{{ student.teacher }}</strong>
+        </p>
+      </header>
+
+      <section class="card">
+        <h2>¿Qué hace esta aplicación?</h2>
+        <p>
+          Esta aplicación web usa el modelo final seleccionado en mi proyecto de regresión.
+          El objetivo es estimar <strong>{{ project.target }}</strong>, que representa la
+          <strong>temperatura máxima del día siguiente</strong>, medida en grados Celsius.
+        </p>
+        <p>
+          Los datos que se capturan en el formulario son variables originales del dataset,
+          por ejemplo temperatura actual, temperatura estimada por LDAPS y nubosidad.
+          El usuario no tiene que escribir variables transformadas, valores escalados ni
+          componentes de PCA.
+        </p>
+      </section>
+
+      <section class="card grid-two">
+        <div>
+          <h2>Registro del dataset</h2>
+          <dl class="data-list">
+            <dt>Nombre del dataset</dt>
+            <dd>{{ project.dataset_name }}</dd>
+
+            <dt>Variable a predecir</dt>
+            <dd>{{ project.target }}</dd>
+
+            <dt>Descripción de la variable dependiente</dt>
+            <dd>{{ project.target_description }}</dd>
+
+            <dt>Fuente del dataset</dt>
+            <dd>
+              <a href="{{ project.dataset_url }}" target="_blank" rel="noopener">
+                Kaggle - Bias Correction UCL
+              </a>
+            </dd>
+          </dl>
+        </div>
+
+        <div>
+          <h2>Modelo desplegado</h2>
+          <dl class="data-list">
+            <dt>Metodología</dt>
+            <dd>{{ project.methodology }}</dd>
+
+            <dt>Mejor escenario</dt>
+            <dd>{{ project.best_scenario }}</dd>
+
+            <dt>Modelo usado</dt>
+            <dd>{{ project.best_model }}</dd>
+
+            <dt>Evaluación final</dt>
+            <dd>
+              R² = {{ "%.3f"|format(metadata.metrics.r2_test) }} ·
+              MAE = {{ "%.3f"|format(metadata.metrics.mae_test) }} °C
+            </dd>
+          </dl>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>Datos que se registran en el formulario</h2>
+        <p>
+          Estas son las seis características seleccionadas durante el análisis. Cada campo
+          corresponde a una variable original y entendible del problema climático.
+        </p>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Variable</th>
+                <th>Qué representa</th>
+                <th>Unidad o rango</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for field in fields %}
+                <tr>
+                  <td><code>{{ field.name }}</code></td>
+                  <td>{{ field.description }}</td>
+                  <td>{{ field.unit }}</td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      {% if errors %}
+        <section class="alert" role="alert">
+          <h2>Revisa los datos capturados</h2>
+          {% for error in errors %}
+            <p>{{ error }}</p>
+          {% endfor %}
+        </section>
+      {% endif %}
+
+      <form class="form" method="post">
+        <div class="form-title">
+          <h2>Formulario de predicción</h2>
+          <p>Captura valores reales del clima y presiona el botón para generar la predicción.</p>
+        </div>
+
+        {% for field in fields %}
+          <label class="field" for="{{ field.name }}">
+            <span>
+              {{ field.label }}
+              <small>{{ field.unit }}</small>
+            </span>
+            <input
+              id="{{ field.name }}"
+              name="{{ field.name }}"
+              type="number"
+              min="{{ field.min }}"
+              max="{{ field.max }}"
+              step="{{ field.step }}"
+              placeholder="Ejemplo: {{ field.example }}"
+              value="{{ submitted.get(field.name, '') }}"
+              required
+            >
+            <em>{{ field.description }}</em>
+          </label>
+        {% endfor %}
+
+        <button type="submit">Predecir temperatura máxima</button>
+      </form>
+
+      {% if prediction is not none %}
+        <section class="result">
+          <p>Resultado de la predicción</p>
+          <strong>{{ "%.2f"|format(prediction) }} °C</strong>
+          <span>
+            Esta es la temperatura máxima estimada para el día siguiente con base en los
+            valores capturados en el formulario.
+          </span>
+        </section>
+      {% endif %}
+    </main>
+  </body>
+</html>

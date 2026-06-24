@@ -1,0 +1,6 @@
+URL pública de Render:
+
+PENDIENTE: pega aquí la URL cuando Render termine el despliegue.
+
+Ejemplo:
+https://nombre-de-tu-aplicacion.onrender.com
